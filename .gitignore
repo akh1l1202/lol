@@ -1,0 +1,53 @@
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+
+# --- IDE / editor ---
+.idea/
+.vscode/
+*.iml
+
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+firebase_credentials.json
+
+# --- Flutter / Dart (mobile/) ---
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+*.lock.bak
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/key.properties
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+*.apk
+*.aab
+
+# --- Go (backend/) ---
+/backend/bin/
+/backend/server
+/backend/seed
+*.exe
+*.test
+*.out
+vendor/
+
+# --- Python (voice-prototype/ + backend/ai-service/ + voice_coach/) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# --- ML / data artifacts (keep .joblib and .csv out of git if regenerating locally) ---
+# distraction_classifier.joblib  # tracked intentionally for now — remove line to ignore
+.env copy.example

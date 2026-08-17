@@ -1,0 +1,18 @@
+# AI Focus Gateway — FastAPI server + ML distraction classifier.
+# Versions intentionally unpinned for now; lock these after the first
+# successful install in a Python 3.11/3.12 venv (host 3.14 may lack wheels).
+
+fastapi
+uvicorn[standard]
+pydantic
+
+# ML pipeline (train_model.py + runtime model load)
+pandas
+scikit-learn
+joblib
+
+# LLM provider (Gemini) — google-genai SDK, used in Services/llm_services.py
+google-genai
+
+# Loads GEMINI_API_KEY from ai-service/.env at startup (main.py)
+python-dotenv
