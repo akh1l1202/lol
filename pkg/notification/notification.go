@@ -52,6 +52,21 @@ func NewFirebaseDispatcher(credentialsPath string) (*FirebaseDispatcher, error) 
 	return &FirebaseDispatcher{client: client}, nil
 }
 
+// NewFirebaseDispatcherFromJSON initializes the dispatcher using raw JSON bytes
+func NewFirebaseDispatcherFromJSON(credentialsJSON []byte) (*FirebaseDispatcher, error) {
+	ctx := context.Background()
+	opt := option.WithCredentialsJSON(credentialsJSON)
+	app, err := firebase.NewApp(ctx, nil, opt)
+	if err != nil {
+		return nil, fmt.Errorf("error initializing firebase app from JSON: %w", err)
+	}
+	client, err := app.Messaging(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error getting messaging client: %w", err)
+	}
+	return &FirebaseDispatcher{client: client}, nil
+}
+
 func (d *FirebaseDispatcher) Send(token string, msg Message) error {
 	ctx := context.Background()
 	_, err := d.client.Send(ctx, &messaging.Message{

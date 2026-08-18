@@ -71,18 +71,27 @@ func main() {
 
 	// Initialize Notification Dispatcher
 	var notificationDispatcher notification.Dispatcher
-	if credPath := os.Getenv("FIREBASE_CREDENTIALS_PATH"); credPath != "" {
+	if credJSON := os.Getenv("FIREBASE_CREDENTIALS_JSON"); credJSON != "" {
+		fd, err := notification.NewFirebaseDispatcherFromJSON([]byte(credJSON))
+		if err != nil {
+			log.Printf("Failed to initialize Firebase dispatcher from JSON: %v. Falling back to Mock.", err)
+			notificationDispatcher = notification.NewMockDispatcher()
+		} else {
+			notificationDispatcher = fd
+			log.Println("Notification service: Firebase Cloud Messaging enabled (JSON)")
+		}
+	} else if credPath := os.Getenv("FIREBASE_CREDENTIALS_PATH"); credPath != "" {
 		fd, err := notification.NewFirebaseDispatcher(credPath)
 		if err != nil {
 			log.Printf("Failed to initialize Firebase dispatcher: %v. Falling back to Mock.", err)
 			notificationDispatcher = notification.NewMockDispatcher()
 		} else {
 			notificationDispatcher = fd
-			log.Println("Notification service: Firebase Cloud Messaging enabled")
+			log.Println("Notification service: Firebase Cloud Messaging enabled (File)")
 		}
 	} else {
 		notificationDispatcher = notification.NewMockDispatcher()
-		log.Println("Notification service: Mock/Stdout enabled (set FIREBASE_CREDENTIALS_PATH to enable FCM)")
+		log.Println("Notification service: Mock/Stdout enabled (set FIREBASE_CREDENTIALS_JSON or FIREBASE_CREDENTIALS_PATH to enable FCM)")
 	}
 
 	authHandler := auth.NewAuthHandler(userRepo)
